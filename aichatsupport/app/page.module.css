@@ -1,0 +1,142 @@
+/* page.module.css */
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.videoBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.gradientOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0.7)
+  );
+  z-index: -1;
+}
+
+.chatContainer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 20px; /* Add padding to prevent elements from touching screen edges */
+}
+
+.robotFace {
+  width: 30vw;
+  max-width: 200px;
+  height: 40vw;
+  max-height: 170px;
+  background-color: #333; /* Dark background to resemble the face */
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.eye {
+  width: 20%;
+  height: 30%;
+  background-color: #00f2e4; /* Light blue eye color */
+  border-radius: 5px;
+  margin: 0 5%;
+  transition: height 0.4s ease;
+}
+
+.closed {
+  height: 5px; /* Reduce the height to create a thin line for closed eyes */
+}
+
+.chatBox {
+  width: 80%;
+  max-width: 500px;
+  height: 55vh;
+  max-height: 400px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.messageBox {
+  display: flex;
+  justify-content: flex-start; /* Adjust this based on role */
+}
+
+.assistantMessage {
+  background-color: var(--mui-palette-primary-main);
+  color: white;
+  border-radius: 16px;
+  padding: 10px 16px;
+  word-wrap: break-word;
+  max-width: 70%;
+}
+
+.userMessage {
+  background-color: var(--mui-palette-secondary-main);
+  color: black;
+  border-radius: 16px;
+  padding: 10px 16px;
+  word-wrap: break-word;
+  max-width: 70%;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.inputContainer input,
+.inputContainer button {
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .chatBox {
+    height: 50vh;
+    max-height: none;
+    padding: 12px;
+  }
+
+  .inputContainer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .robotFace {
+    width: 40vw;
+    height: 40vw;
+  }
+
+  .eye {
+    width: 25%;
+  }
+}

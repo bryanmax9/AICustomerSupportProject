@@ -33,57 +33,28 @@ Key Guidelines:
 export async function POST(req) {
   try {
     const body = await req.json();
+    const { content } = body;
 
-    const { content } = body; // Extract 'content' directly from the body
-
-    if (!content) {
-      throw new Error("Message content is null or undefined");
+    if (!content || typeof content !== "string" || content.trim() === "") {
+      throw new Error("Message content is null, undefined, or invalid");
     }
 
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const openai = new OpenAI({
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey: process.env.OPENROUTER_API_KEY,
+    });
 
     const completion = await openai.chat.completions.create({
+      model: "rwkv/rwkv-5-world-3b",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: content },
       ],
-      model: "gpt-4",
-      stream: true,
     });
 
-    // Process the stream manually
-    async function processStream(controller) {
-      const encoder = new TextEncoder();
-      try {
-        for await (const chunk of completion) {
-          const content = chunk.choices[0]?.delta?.content;
-          if (content) {
-            controller.enqueue(encoder.encode(content));
-          }
-        }
-      } catch (error) {
-        controller.error(error);
-      } finally {
-        controller.close();
-      }
-    }
+    const responseMessage = completion.choices[0].message.content;
 
-    const stream = new ReadableStream({
-      start(controller) {
-        processStream(controller);
-      },
-    });
-
-    return new NextResponse(stream, {
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
-    // previous return
-    // return NextResponse.json(
-    //   {
-    //     message: completion.choices[0].message.content,
-    //   },
-    //   { status: 200 }
-    // );
+    return NextResponse.json({ message: responseMessage }, { status: 200 });
   } catch (error) {
     console.error("Error in POST /api/chat:", error);
     return NextResponse.json({ error: error.message }, { status: 400 });

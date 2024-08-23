@@ -52,7 +52,7 @@ export default function Login() {
           {error && <p className={styles.errorMessage}>{error}</p>}
         </form>
         <p className={styles.registerText}>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a href="/register" className={styles.registerLink}>
             Register
           </a>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation"; // Change to next/navigation
 import { auth } from "./firebaseConfig";
-import styles from "./page.module.css";
+import styles from "./homepage.module.css";
 
 export default function HomePage() {
   const [messages, setMessages] = useState([

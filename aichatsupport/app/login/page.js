@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from "next/navigation"; // Change to next/navigation
-import { auth } from "../firebaseConfig"; // Corrected the import path
-import styles from "../page.module.css"; // Adjust the path for CSS if needed
+import { useRouter } from "next/navigation";
+import { auth } from "../firebaseConfig";
+import styles from "./home.module.css"; // Import your module CSS
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -22,29 +22,42 @@ export default function Login() {
   };
 
   return (
-    <div className={styles.authContainer}>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-        {error && <p className={styles.error}>{error}</p>}
-      </form>
-      <p>
-        Don't have an account? <a href="/register">Register</a>
-      </p>
+    <div className={styles.loginContainer}>
+      <video autoPlay muted loop className={styles.videoBg}>
+        <source src="./videos/background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div className={styles.loginFormContainer}>
+        <h1 className={styles.loginTitle}>Login</h1>
+        <form onSubmit={handleLogin} className={styles.loginForm}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className={styles.loginInput}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.loginInput}
+          />
+          <button type="submit" className={styles.loginButton}>
+            Login
+          </button>
+          {error && <p className={styles.errorMessage}>{error}</p>}
+        </form>
+        <p className={styles.registerText}>
+          Don't have an account?{" "}
+          <a href="/register" className={styles.registerLink}>
+            Register
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

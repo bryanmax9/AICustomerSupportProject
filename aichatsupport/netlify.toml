@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NEXT_PUBLIC_FIREBASE_API_KEY = "AIzaSyD-UdaTLSgnSqt4H6Y0KR5fOvZi_ppd06U"
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "ai-robotchat.firebaseapp.com"
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID = "ai-robotchat"
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "ai-robotchat.appspot.com"
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "911733738944"
+  NEXT_PUBLIC_FIREBASE_APP_ID = "1:911733738944:web:9cf7a04101929dbca14c25"
+  OPENROUTER_API_KEY = "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"

@@ -1014,6 +1014,20 @@ agentkeepalive@^4.2.1:
   dependencies:
     humanize-ms "^1.2.1"
 
+"aichatsupport@file:":
+  version "0.1.0"
+  resolved "file:"
+  dependencies:
+    "@emotion/react" "^11.13.0"
+    "@emotion/styled" "^11.13.0"
+    "@mui/material" "^5.16.7"
+    aichatsupport "file:"
+    firebase "^10.13.0"
+    next "14.2.5"
+    openai "^4.55.9"
+    react "^18"
+    react-dom "^18"
+
 ajv@^6.12.4:
   version "6.12.6"
   resolved "https://registry.npmjs.org/ajv/-/ajv-6.12.6.tgz"

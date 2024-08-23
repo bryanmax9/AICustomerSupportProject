@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 
 const systemPrompt = `
 You are a highly capable and responsive customer support AI, designed to assist users with any inquiries they may have. Your primary goal is to provide accurate, helpful, and friendly support across a wide range of topics. Whether a user needs help with troubleshooting, understanding a product, navigating a service, or performing quick searches, you are here to help.
@@ -39,23 +38,65 @@ export async function POST(req) {
       throw new Error("Message content is null, undefined, or invalid");
     }
 
-    const openai = new OpenAI({
-      baseURL: "https://openrouter.ai/api/v1",
-      apiKey: process.env.OPENROUTER_API_KEY,
-    });
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": process.env.YOUR_SITE_URL || "",
+          "X-Title": process.env.YOUR_SITE_NAME || "",
+        },
+        body: JSON.stringify({
+          model: "meta-llama/llama-3.1-8b-instruct:free",
+          stream: false,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: content },
+          ],
+        }),
+      }
+    );
 
-    const completion = await openai.chat.completions.create({
-      model: "rwkv/rwkv-5-world-3b",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: content },
-      ],
-    });
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
 
-    const responseMessage = completion.choices[0].message.content;
+    const rawResponse = await response.text(); // Get raw text
+    console.log("Raw Response:", rawResponse); // Log the raw response
+
+    // Now, attempt to parse the JSON
+    const completion = JSON.parse(rawResponse);
+
+    if (!completion.choices || completion.choices.length === 0) {
+      console.error("Invalid Response:", JSON.stringify(completion, null, 2));
+      throw new Error("No valid response from the AI model");
+    }
+
+    const responseMessage = completion.choices[0]?.message?.content;
+
+    if (!responseMessage) {
+      console.error(
+        "Response message is undefined:",
+        JSON.stringify(completion, null, 2)
+      );
+      throw new Error("Response message is undefined");
+    }
 
     return NextResponse.json({ message: responseMessage }, { status: 200 });
   } catch (error) {
+    if (error.message.includes("Timeout") || error.code === 408) {
+      console.error("Request Timeout:", error.message);
+      return NextResponse.json(
+        {
+          error:
+            "The request to the AI model timed out. Please try again later.",
+        },
+        { status: 408 }
+      );
+    }
+
     console.error("Error in POST /api/chat:", error);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

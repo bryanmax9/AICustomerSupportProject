@@ -47,3 +47,5 @@ To deploy this project, we used Vercel that supports Next.js.
     - CSS Modules: Used for styling components with scoped CSS.
 
 ## DEMO
+
+video link: https://www.youtube.com/watch?v=hZZRAj_nFmk&t=85s

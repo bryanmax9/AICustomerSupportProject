@@ -1,7 +1,7 @@
 [build]
-  base = "aichatsupport"  # Set the base directory to aichatsupport
+  base = "aichatsupport"
   command = "npm run build"
-  publish = ".next"  # Publish the .next directory relative to the base directory
+  publish = ".next"
 
 [build.environment]
   NEXT_PUBLIC_FIREBASE_API_KEY = "AIzaSyD-UdaTLSgnSqt4H6Y0KR5fOvZi_ppd06U"
